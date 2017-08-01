@@ -5,7 +5,9 @@
 import numpy as np
 import cv2
 
-detector = cv2.CascadeClassifier('haarscade_frontalface_default.xml')
+classifier_file = 'haarcascade_frontalface_default.xml'
+
+detector = cv2.CascadeClassifier(classifier_file)
 cap = cv2.VideoCapture(0)
 
 while(True):
@@ -13,7 +15,7 @@ while(True):
    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
    faces = detector.detectMultiScale(gray, 1.3, 5)
 
-   for (x,y,z,h) in faces:
+   for (x,y,w,h) in faces:
        cv2.rectangle(img, (x,y), (x+w, y+h), (255, 0, 0), 2)
 
    cv2.imshow('OpenCV Face Live Detection Demo', img)

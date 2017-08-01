@@ -6,30 +6,37 @@ from PIL import Image
 
 classifier_file = 'haarcascade_frontalface_default.xml'
 
-MAX_FACES = 1
+images_ext = ['.png', '.jpg', '.jpeg']
 
-def getFacesForTrainer(imagePath, detector):
+def getFacesForTrainer(imagesPath, detector):
     faces = []
+    identifiers = []
 
-    pilImage = Image.open(imagePath).convert('L')
-    imageNp = np.array(pilImage, 'uint8')
+    images = [os.path.join(imagesPath, img) for img in os.listdir(imagesPath) if os.path.splitext(img)[1] in images_ext]
 
-    _faces = detector.detectMultiScale(imageNp)
+    count=1
+    for image in images:
+        pilImage = Image.open(image).convert('L')
+        imageNp = np.array(pilImage, 'uint8')
 
-    for (x, y, w, h) in _faces[:MAX_FACES]:
-        faces.append(imageNp[y: y+h, x: x+w])
+        _faces = detector.detectMultiScale(imageNp)
 
-    return faces
+        for (x, y, w, h) in _faces:
+            faces.append(imageNp[y: y+h, x: x+w])
+            identifiers.append(count)
+            count=count+1
+
+    return faces, identifiers
 
 
 
-def setTrainer(imagePath, outputDirectory, fileName='trainer'):
+def setTrainer(imagesPath, outputDirectory, fileName='trainer'):
     detector, recognizer = getDectectorAndReconigzer()
 
     outputFile = os.path.join(outputDirectory, '{0}.yml'.format(fileName))
-    
-    faces = getFacesForTrainer(imagePath, detector)
-    recognizer.train(faces, np.array(7))
+
+    faces, identifiers = getFacesForTrainer(imagesPath, detector)
+    recognizer.train(faces, np.array(identifiers))
     recognizer.save(outputFile)
 
     print('{0} faces detected! Info stored in {1}'.format(len(faces), outputFile))
@@ -40,7 +47,7 @@ def getDectectorAndReconigzer():
     if not os.path.isfile(classifier_file):
         print("%s does not exits in the current directory!" % classifier_file)
         return
-   
+
     recognizer = cv2.createLBPHFaceRecognizer()
     detector = cv2.CascadeClassifier(classifier_file)
 
@@ -53,8 +60,3 @@ if __name__ == '__main__':
         sys.exit(-1)
 
     setTrainer(sys.argv[1], '.')
-
-
-
-
-
