@@ -1,6 +1,6 @@
 # Face Recognition with OpenCV 
 
-This is an example of face recognition with OpenCV, this was for an assignament in
+This is an example of face recognition with [OpenCV](https://opencv.org/), this was for an assignament in
 college, but here it is for reference and help for anyone who needed. 
 
 ## Requirements
