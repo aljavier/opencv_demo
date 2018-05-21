@@ -20,18 +20,18 @@ college, but here it is for reference and help for anyone who needed.
 
 ## How to use
 
-First you need to run `trainer.py` to create a *trainer.yml* file, which is the one
+First, you need to run `trainer.py` to create a *trainer.yml* file, which is the one
 with the info from your database of images. Therefore, you also need a database of images.
 Which is simply, a folder with a bunch of images of people with faces.
 
 ```
-trainer.py images_folder
+trainer.py images_folder/
 ```
 
 This creates the file *trainer.yml*, which is used by `face_detector.py`.
 
 Then, you can just ran the `face_detector.py` script passing as an argument the image of the 
-person you want to check if exists in your **database of images** (the one used for the `trainer.py`).
+person you want to check if exists in your *database of images* (the one used for the `trainer.py`).
 
 ```face_detector.py ~/downloads/sammy_sosa.png```
 
