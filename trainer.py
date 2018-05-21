@@ -48,7 +48,7 @@ def getDectectorAndReconigzer():
         print("%s does not exits in the current directory!" % classifier_file)
         return
 
-    recognizer = cv2.createLBPHFaceRecognizer()
+    recognizer = cv2.face.LBPHFaceRecognizer_create()
     detector = cv2.CascadeClassifier(classifier_file)
 
     return  detector, recognizer
